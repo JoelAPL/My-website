@@ -18,6 +18,7 @@
   /* Font and typography */
   --body-font: 'Poppins', sans-serif;
   --biggest-font-size: 2rem;
+  --medium-font-size: 1.75rem;
   --h2-font-size: 1.25rem;
   --h3-font-size: 1.125rem;
   --normal-font-size: .938rem;
@@ -401,18 +402,27 @@ img{
 }
 
 .habilidades__js {
-  width: 65%;
+  width: 75%;
 }
 
 .habilidades__mysql {
-  width: 70%;
+  width: 80%;
 }
 
 .habilidades__php {
-  width: 45%;
+  width: 60%;
 }
 
 /*=============== works ===============*/
+
+.works__title{
+  text-align: center;
+  font-size: var(--medium-font-size);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--mb-2);
+}
+
+
 .works__data {
   text-align: center;
 }
@@ -454,6 +464,29 @@ img{
   transform: var(--img-scale);
 }
 
+.workstage, .workring, .workimg {
+  width:100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  user-select:none;
+  padding-top: 4rem;
+}
+  
+.divisor{
+  padding-top: 30rem;
+}
+.work , svg {
+  position: absolute;
+}
+
+.works__image {
+  perspective: 2000px;
+  width: 300px;
+  height: 400px;  
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
 
 .works__container {
   row-gap: 2rem;
@@ -793,3 +826,5 @@ s
         font-weight: bold;
         color: #fff;
       }
+
+ 

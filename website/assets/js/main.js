@@ -121,3 +121,66 @@ sr.reveal(`.acerca__data, .send__img, .crud__img`, {
     origin: 'right'
 })
 
+
+let xPos = 0;
+
+gsap.timeline()
+    .set('.workring', { rotationY:180, cursor:'grab' }) //set initial rotationY so the parallax jump happens off screen
+    .set('.workimg',  { // apply transform rotations to each image
+      rotateY: (i)=> i*-36,
+      transformOrigin: '50% 50% 500px',
+      z: -500,
+      backgroundImage:(i)=>'url(https://picsum.photos/id/'+(i+32)+'/600/400/)',
+      backgroundPosition:(i)=>getBgPos(i),
+      backfaceVisibility:'hidden'
+    })    
+    .from('.workimg', {
+      duration:1.5,
+      y:200,
+      opacity:0,
+      stagger:0.1,
+      ease:'expo'
+    })
+    .add(()=>{
+      $('.workimg').on('mouseenter', (e)=>{
+        let current = e.currentTarget;
+        gsap.to('.workimg', {opacity:(i,t)=>(t==current)? 1:0.5, ease:'power3'})
+      })
+      $('.workimg').on('mouseleave', (e)=>{
+        gsap.to('.workimg', {opacity:1, ease:'power2.inOut'})
+      })
+    }, '-=0.5')
+
+$(window).on('mousedown touchstart', dragStart);
+$(window).on('mouseup touchend', dragEnd);
+      
+
+function dragStart(e){ 
+  if (e.touches) e.clientX = e.touches[0].clientX;
+  xPos = Math.round(e.clientX);
+  gsap.set('.workring', {cursor:'grabbing'})
+  $(window).on('mousemove touchmove', drag);
+}
+
+
+function drag(e){
+  if (e.touches) e.clientX = e.touches[0].clientX;    
+
+  gsap.to('.workring', {
+    rotationY: '-=' +( (Math.round(e.clientX)-xPos)%360 ),
+    onUpdate:()=>{ gsap.set('.workimg', { backgroundPosition:(i)=>getBgPos(i) }) }
+  });
+  
+  xPos = Math.round(e.clientX);
+}
+
+
+function dragEnd(e){
+  $(window).off('mousemove touchmove', drag);
+  gsap.set('.workring', {cursor:'grab'});
+}
+
+
+function getBgPos(i){ //returns the background-position string to create parallax movement in each image
+  return ( 100-gsap.utils.wrap(0,360,gsap.getProperty('.working', 'rotationY')-180-i*36)/360*500 )+'px 0px';
+}
